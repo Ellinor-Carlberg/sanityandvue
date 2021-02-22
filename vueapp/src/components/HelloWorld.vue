@@ -26,17 +26,30 @@
       <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    </ul> 
+    <h1> {{ title }}</h1> 
+    <h2> {{ body }}</h2> 
+    <h1>{{ img }}</h1>
+    <img v-bind:src="img"/>
   </div>
 </template>
 
 <script>
+import { useSanityFetcher } from 'vue-sanity';
+
 export default {
   name: 'HelloWorld',
   props: {
-    msg: String
-  }
-}
+    msg: String 
+  },
+  setup() {
+    const { data: title } = useSanityFetcher('*[_type == "post"][0].title')
+    const { data: body } = useSanityFetcher('*[_type == "post"][0].body[0].children[0].text')
+    const { data: img } = useSanityFetcher('*[_type == "post"][0].mainImage.asset._ref')
+    console.log(img)
+ return { title, body, img }
+  }, 
+} 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
